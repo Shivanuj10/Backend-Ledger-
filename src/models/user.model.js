@@ -34,15 +34,23 @@ const userSchema = mongoose.Schema(
   },
 );
 
-userSchema.pre("save", async function (next) {
+// Without this hook:
+
+// passwords would be stored in plain text ❌
+
+// With this hook:
+
+// passwords are automatically encrypted before saving ✔
+
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
-    return next();
+    return;
   }
 
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
 
-  return next();
+  return;
 });
 
 userSchema.methods.comparePassword = async function (password) {
