@@ -10,4 +10,10 @@ transactionRoutes.post(
   transactionController.createTransaction,
 );
 
+transactionRoutes.post(
+  "/system/initial-funds",
+  authMiddleware.authSystemUserMiddleware,
+  transactionController.createInitialFundsTransaction,
+);
+
 module.exports = transactionRoutes;
